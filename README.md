@@ -1,4 +1,4 @@
 aspectjs
 ========
 
-a way of javascript aop.
+A way of javascript aop.
