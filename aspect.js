@@ -24,7 +24,7 @@
    * set before function.
    * @return {object} self object
    */
-global.Aspect.prototype.before = function() {
+  global.Aspect.prototype.before = function() {
     if (_isFunction(arguments[0])) {
       this._beforeFuncs.push(
         new _FuncData(arguments[0], _applyArraySlice(arguments, 1))
@@ -37,7 +37,7 @@ global.Aspect.prototype.before = function() {
    * set target function.
    * @return {object} self object
    */
-global.Aspect.prototype.target = function() {
+  global.Aspect.prototype.target = function() {
     if (this._targetFunc)
       throw new Error("Target function is already set.");
 
@@ -52,7 +52,7 @@ global.Aspect.prototype.target = function() {
    * set target function(and execute asynchronous).
    * @return {object} self object
    */
-global.Aspect.prototype.asyncTarget = function() {
+  global.Aspect.prototype.asyncTarget = function() {
     this._asyncTarget = true;
     this.target(arguments);
     return this;
@@ -62,7 +62,7 @@ global.Aspect.prototype.asyncTarget = function() {
    * set after function.
    * @return {object} self object
    */
-global.Aspect.prototype.after = function() {
+  global.Aspect.prototype.after = function() {
     if (_isFunction(arguments[0])) {
       this._afterFuncs.push(
         new _FuncData(arguments[0], _applyArraySlice(arguments, 1))
