@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Aspect.js demo1</title>
+    <meta http-equiv="Content-Style-Type" charset="text/css" />
+    <meta http-equiv="Content-Script-Type" charset="text/javascript" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../aspect.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="content">
+        <h1>Demo</h1>
+      </div>
+    </div>
+    <script type="text/javascript">
+      jQuery(function($) {
+        // demo 1
+        var targetResultValue =
+          new Aspect()
+            .before(logging, "Hello")
+              .before(logging, " everyone")
+                .target(targetFunction, "  this")
+              .after(logging, " is")
+            .after(logging, "aop!!")
+            .execute();
+
+        alert("targetFunction(): " + targetResultValue);
+      });
+
+      function logging(log) {
+        console.log(log);
+      }
+
+      function targetFunction(message) {
+        console.info(message);
+        return "target has executed.";
+      }
+    </script>
+  </body>
+</html>
