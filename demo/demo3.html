@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Aspect.js demo3</title>
+    <meta http-equiv="Content-Style-Type" charset="text/css" />
+    <meta http-equiv="Content-Script-Type" charset="text/javascript" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../aspect.js"></script>
+    <script type="text/javascript" src="../jquery.blockUI.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="content">
+        <h1>Demo</h1>
+      </div>
+    </div>
+    <script type="text/javascript">
+      jQuery(function($) {
+        // demo 3
+        new Aspect()
+          .before($.blockUI, { fadeIn: 0 })
+            .before(logging, "all you need is")
+              .target(targetFunction, " love")
+            .after(logging, " !!!")
+          .after($.unblockUI)
+          .execute();
+          
+        console.log("   ...one more!");
+
+        new Aspect()
+          .before($.blockUI, { fadeIn: 0 })
+            .before(logging, "all you need is")
+              .asyncTarget(targetFunction, " love")
+            .after(logging, " !!!")
+          .after($.unblockUI)
+          .execute();
+      });
+
+      function logging(log) {
+        console.log(log);
+      }
+
+      // heavy process
+      function targetFunction(message) {
+        for (var i = 0; i < 50000; i++) {
+          console.info(message);
+        }
+      }
+    </script>
+  </body>
+</html>

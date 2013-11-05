@@ -22,12 +22,14 @@
 
   /**
    * set before function.
+   * @param arguments[0] function
+   * @param arguments[1:] parameters
    * @return {object} self object
    */
   global.Aspect.prototype.before = function() {
     if (_isFunction(arguments[0])) {
       this._beforeFuncs.push(
-        new _FuncData(arguments[0], _applyArraySlice(arguments, 1))
+        new _FuncData(arguments[0], [].slice.call(arguments, 1))
       );
     }
     return this;
@@ -35,37 +37,39 @@
 
   /**
    * set target function.
+   * @param arguments[0] function
+   * @param arguments[1:] parameters
    * @return {object} self object
    */
   global.Aspect.prototype.target = function() {
-    if (this._targetFunc)
-      throw new Error("Target function is already set.");
-
     if (_isFunction(arguments[0])) {
       this._targetFunc = 
-        new _FuncData(arguments[0], _applyArraySlice(arguments, 1));
+        new _FuncData(arguments[0], [].slice.call(arguments, 1));
     }
     return this;
   };
 
   /**
    * set target function(and execute asynchronous).
+   * @param arguments[0] function
+   * @param arguments[1:] parameters
    * @return {object} self object
    */
   global.Aspect.prototype.asyncTarget = function() {
     this._asyncTarget = true;
-    this.target(arguments);
-    return this;
+    return this.target.apply(this, [].slice.call(arguments, 0));
   };
 
   /**
    * set after function.
+   * @param arguments[0] function
+   * @param arguments[1:] parameters
    * @return {object} self object
    */
   global.Aspect.prototype.after = function() {
     if (_isFunction(arguments[0])) {
       this._afterFuncs.push(
-        new _FuncData(arguments[0], _applyArraySlice(arguments, 1))
+        new _FuncData(arguments[0], [].slice.call(arguments, 1))
       );
     }
     return this;
@@ -73,12 +77,14 @@
   
   /**
    * set after function(ensure execute).
+   * @param arguments[0] function
+   * @param arguments[1:] parameters
    * @return {object} self object
    */
   global.Aspect.prototype.afterEnsure = function() {
     if (_isFunction(arguments[0])) {
       this._afterFuncs.push(
-        new _FuncData(arguments[0], _applyArraySlice(arguments, 1), true)
+        new _FuncData(arguments[0], [].slice.call(arguments, 1), true)
       );
     }
     return this;
@@ -111,12 +117,17 @@
       var result = null;
       var afterFuncsTuple = _splitFuncsEnsuredOrNot(self._afterFuncs);
 
-      // execute before functions
-      for (var i = 0, l = self._beforeFuncs.length; i < l; i++) {
-        self._beforeFuncs[i].apply();
+      try {
+        // execute before functions
+        for (var i = 0, l = self._beforeFuncs.length; i < l; i++)
+          self._beforeFuncs[i].apply();
+      } catch(e) {
+        // if error, execute after ensured functions
+        for (var i = 0, l = afterFuncsTuple[0].length; i < l; i++)
+          afterFuncsTuple[0][i].apply();
       }
-      
-      if (this._asyncTarget) {
+        
+      if (self._asyncTarget) {
         // (async) execute target and after functions
         window.setTimeout(function() {
           result =
@@ -181,16 +192,6 @@
    */
   var _isFunction = function(f) {
     return f && (typeof f === "function" || f instanceof Function); 
-  };
-
-  /**
-   * apply Array.slice(begin[, end]) to parameter object.
-   * @param {object}  obj   apply object
-   * @param {integer} begin begin index
-   * @param {integer} end   end index
-   */
-  var _applyArraySlice = function(obj, begin, end) {
-    return Array.prototype.slice.call(obj, begin, end);
   };
 
   /**
