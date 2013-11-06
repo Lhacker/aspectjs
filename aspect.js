@@ -163,7 +163,7 @@
    * @constructor
    * @param {Function}  func          function object
    * @param {Array}     params        function's valiable arguments
-   * @param {Boolean}   ensureExecute whether ensure execute or not
+   * @param {boolean}   ensureExecute whether ensure execute or not
    */
   var _FuncData = function(func, params, ensureExecute) {
     this._func = func;
@@ -172,7 +172,7 @@
   };
   /**
    * judge ensured function or not.
-   * @return {Boolean} whether ensure execute or not
+   * @return {boolean} whether ensure execute or not
    */
   _FuncData.prototype.isEnsured = function() {
       return this._ensureExecute;
@@ -188,7 +188,7 @@
   /**
    * judge whether function or not.
    * @param   {object}  f function object
-   * @return  {Boolean}   whether function or not
+   * @return  {boolean}   whether function or not
    */
   var _isFunction = function(f) {
     return f && (typeof f === "function" || f instanceof Function); 
