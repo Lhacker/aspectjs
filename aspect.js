@@ -10,7 +10,7 @@
    *  new Aspect()
    *    .before(function(a) { console.log(a); }, "a")
    *      .target(function(msg) { alert(msg); }, "target")
-   *    .before(function(b) { console.log(b) }, "b")
+   *    .after(function(b) { console.log(b) }, "b")
    *    .execute();
    */
   global.Aspect = function() {
