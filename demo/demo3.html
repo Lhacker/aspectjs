@@ -8,32 +8,35 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script type="text/javascript" src="../aspect.js"></script>
-    <script type="text/javascript" src="../jquery.blockUI.js"></script>
+    <script type="text/javascript" src="./jquery.blockUI.js"></script>
   </head>
   <body>
     <div id="container">
       <div id="content">
-        <h1>Demo</h1>
+        <h1>Demo3</h1>
+        <p>please open console.</p>
       </div>
     </div>
     <script type="text/javascript">
       jQuery(function($) {
         // demo 3
+        /* This target function is too heavy to aspect block UI well... */
+        /*
         new Aspect()
           .before($.blockUI, { fadeIn: 0 })
             .before(logging, "all you need is")
               .target(targetFunction, " love")
-            .after(logging, " !!!")
+            .after(logging, "!!!")
           .after($.unblockUI)
           .execute();
-          
-        console.log("   ...one more!");
+        */
 
+        /* This target function is heavy, but we can execute this process async. */
         new Aspect()
           .before($.blockUI, { fadeIn: 0 })
             .before(logging, "all you need is")
               .asyncTarget(targetFunction, " love")
-            .after(logging, " !!!")
+            .after(logging, "!!!")
           .after($.unblockUI)
           .execute();
       });
@@ -44,7 +47,7 @@
 
       // heavy process
       function targetFunction(message) {
-        for (var i = 0; i < 50000; i++) {
+        for (var i = 0; i < 25000; i++) {
           console.info(message);
         }
       }
